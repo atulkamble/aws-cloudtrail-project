@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.0"
+    }
   }
 }
 
@@ -13,14 +17,21 @@ terraform {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-# Common tags applied where supported
+# Generate a short random suffix for bucket uniqueness
+resource "random_id" "bucket" {
+  byte_length = 3
+}
+
+# Common locals
 locals {
+  bucket_name_final = lower("${var.bucket_name_prefix}-${random_id.bucket.hex}")
+
   common_tags = {
-    project     = "aws-cloudtrail-project"
-    owner       = "cloudnautic"
-    region      = data.aws_region.current.name
-    account_id  = data.aws_caller_identity.current.account_id
-    managed_by  = "terraform"
+    project    = "aws-cloudtrail-project"
+    owner      = "cloudnautic"
+    region     = data.aws_region.current.id
+    account_id = data.aws_caller_identity.current.account_id
+    managed_by = "terraform"
   }
 }
 
@@ -34,15 +45,3 @@ resource "aws_s3_bucket_public_access_block" "cloudtrail" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
-
-# You can attach common tags to resources that support tags in their own files, e.g.:
-#   tags = local.common_tags
-#
-# Other resources are split into:
-# - providers.tf     -> provider "aws" with region variable
-# - kms.tf           -> aws_kms_key + alias for encryption
-# - iam.tf           -> IAM role/policy attachments (if needed)
-# - cloudwatch.tf    -> aws_cloudwatch_log_group for real-time streaming
-# - cloudtrail.tf    -> aws_cloudtrail main trail (multi-region, log validation, CW logs)
-# - s3.tf            -> aws_s3_bucket + versioning + bucket policy for CloudTrail
-# - outputs.tf       -> surface trail name, bucket, log group, kms key, etc.

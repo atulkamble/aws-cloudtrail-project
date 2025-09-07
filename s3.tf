@@ -19,7 +19,10 @@ data "aws_iam_policy_document" "cloudtrail" {
   statement {
     sid       = "AWSCloudTrailAclCheck"
     effect    = "Allow"
-    principals { type = "Service", identifiers = ["cloudtrail.amazonaws.com"] }
+    principals { 
+        type = "Service"
+       identifiers = ["cloudtrail.amazonaws.com"] 
+               }
     actions   = ["s3:GetBucketAcl"]
     resources = [aws_s3_bucket.cloudtrail.arn]
   }

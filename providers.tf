@@ -1,3 +1,20 @@
-provider "aws" {
-  region = var.region
+terraform {
+required_version = ">= 1.5.0"
+required_providers {
+aws = {
+source = "hashicorp/aws"
+version = ">= 5.0"
 }
+}
+}
+
+
+provider "aws" {
+region = var.region
+}
+
+
+# Identity/region data
+# (Use `id` instead of deprecated `name` attribute.)
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}

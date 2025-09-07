@@ -28,6 +28,14 @@ aws-cloudtrail-project/
 ├── athena.tf (optional)
 └── README.md
 ```
+```
+git clone git@github.com:atulkamble/aws-cloudtrail-project.git
+cd aws-cloudtrail-project\n
+terraform init
+terraform plan
+terraform apply
+terraform destroy
+```
 
 ---
 

@@ -1,33 +1,30 @@
 variable "region" {
-description = "AWS region"
-type = string
-default = "us-east-1"
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
 }
-
 
 variable "trail_name" {
-description = "CloudTrail name"
-type = string
-default = "cloudnautic-cloudtrail"
+  description = "CloudTrail name"
+  type        = string
+  default     = "cloudnautic-cloudtrail"
 }
 
-
-variable "bucket_name" {
-description = "S3 bucket for CloudTrail logs (must be globally unique)"
-type = string
-default = "cloudnautic-cloudtrail-logs-123456"
+# Instead of a fixed bucket name, use this prefix and a random suffix
+variable "bucket_name_prefix" {
+  description = "Prefix for the S3 bucket name (must be lowercase, no spaces). A random suffix will be added."
+  type        = string
+  default     = "cloudnautic-cloudtrail-logs"
 }
-
 
 variable "log_retention_days" {
-description = "CloudWatch Logs retention"
-type = number
-default = 90
+  description = "CloudWatch Logs retention days"
+  type        = number
+  default     = 90
 }
 
-
 variable "enable_athena" {
-description = "Create Athena/Glue resources"
-type = bool
-default = false
+  description = "Create Athena/Glue resources for querying CloudTrail logs"
+  type        = bool
+  default     = false
 }

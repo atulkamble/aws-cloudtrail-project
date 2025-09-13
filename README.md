@@ -9,6 +9,14 @@ This project provisions a secure and auditable **AWS CloudTrail** setup using Te
 * IAM roles & policies.
 * Optional Athena setup for querying logs.
 
+```
+git clone https://github.com/atulkamble/aws-cloudtrail-project.git
+cd aws-cloudtrail-project
+terraform init
+terraform plan
+terraform apply
+terraform destroy
+```
 ---
 
 ## 📂 Repository Structure
